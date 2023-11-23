@@ -9,14 +9,14 @@ import Foundation
 
 struct Tweet: Encodable {
     var text: String
-    var directMessageDeepLink: String?
-    var forSuperFollowersOnly: Bool?
-    var geo: Geo?
-    var media: Media?
-    var poll: Poll?
-    var quoteTweetID: String?
-    var reply: Reply?
-    var replySettings: String?
+//    var directMessageDeepLink: String?
+//    var forSuperFollowersOnly: Bool?
+//    var geo: Geo?
+//    var media: Media?
+//    var poll: Poll?
+//    var quoteTweetID: String?
+//    var reply: Reply?
+//    var replySettings: String?
 
     struct Geo: Codable {
         var placeID: String

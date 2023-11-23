@@ -9,16 +9,8 @@ import OAuthSwift
 import Foundation
 
 class TweetViewModel {
-    
-    private var isShowingErrorAlert = false
-    
-    func postTweet(tweet: Tweet) {
         
-        guard let tweetData = try? JSONEncoder().encode(tweet),
-              let tweetJSONString = String(data: tweetData, encoding: .utf8) else {
-            print("Failed to encode tweet to JSON.")
-            return
-        }
+    func postTweet(tweet: Tweet) {
         
         let oauthswift = OAuth1Swift(
             consumerKey: "f2bmQM3zpTS8SGtEtwzWH1oJW",
@@ -28,13 +20,21 @@ class TweetViewModel {
             accessTokenUrl: "https://api.twitter.com/oauth/access_token"
         )
         
-        oauthswift.client.credential.oauthToken = "your_access_token"
-        oauthswift.client.credential.oauthTokenSecret = "your_access_token_secret"
+        oauthswift.client.credential.oauthToken = "1703379143264538625-e70zoTAmQbp4vyObVWIB7GS8QnlLWA"
+        oauthswift.client.credential.oauthTokenSecret = "g2daN34LdGGGNahPPQpd3CGrmm5fNlzqSRdM1MCqs9tms"
         
-        let parameters = ["status": tweetJSONString]
+        let parameters = ["text": tweet.text]
+        let headers = ["Content-Type": "application/json"]
         
-        oauthswift.client.post("https://api.twitter.com/2/tweets", parameters: parameters) { result in
-            print("Error")
+        print(parameters)
+        
+        oauthswift.client.post("https://api.twitter.com/2/tweets", parameters: parameters, headers: headers) { result in
+            switch result {
+            case .success(let response):
+                print("Successfully posted tweet. Response: \(response)")
+            case .failure(let error):
+                print("Error posting tweet: \(error)")
+            }
         }
     }
 }

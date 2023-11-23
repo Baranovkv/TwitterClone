@@ -8,20 +8,22 @@
 //import SwiftUI
 //import Combine
 //import CommonCrypto
+//import Observation
 //
-//class TwitterAPI: NSObject, ObservableObject {
-//    @Published var authorizationSheetIsPresented = false
-//    @Published var authorizationURL: URL?
-//    @Published var user: User?
+//@Observable
+//class TwitterAPI: NSObject {
+//    var authorizationSheetIsPresented = false
+//    var authorizationURL: URL?
+//    var user: User?
 //    
 //    private var tokenCredentials: TokenCredentials?
 //    
-////    struct User {
-////        let ID: String
-////        let screenName: String
-////    }
+//    struct User {
+//        let ID: String
+//        let screenName: String
+//    }
 //    
-//    lazy var onOAuthRedirect = PassthroughSubject<URL, Never>()
+//    var onOAuthRedirect = PassthroughSubject<URL, Never>()
 //    
 //    enum OAuthError: Error {
 //        case unknown
@@ -60,15 +62,15 @@
 //        }
 //        let parameterString = parameterComponents.sorted().joined(separator: "&")
 //        return httpMethod + "&" +
-//            baseURLString.oAuthURLEncodedString + "&" +
-//            parameterString.oAuthURLEncodedString
+//        baseURLString.oAuthURLEncodedString + "&" +
+//        parameterString.oAuthURLEncodedString
 //    }
 //    
 //    private func oAuthSigningKey(consumerSecret: String,
 //                                 oAuthTokenSecret: String?) -> String {
 //        if let oAuthTokenSecret = oAuthTokenSecret {
 //            return consumerSecret.oAuthURLEncodedString + "&" +
-//                oAuthTokenSecret.oAuthURLEncodedString
+//            oAuthTokenSecret.oAuthURLEncodedString
 //        } else {
 //            return consumerSecret.oAuthURLEncodedString + "&"
 //        }
@@ -85,7 +87,7 @@
 //        
 //        let signingKey = oAuthSigningKey(consumerSecret: consumerSecret,
 //                                         oAuthTokenSecret: oAuthTokenSecret)
-//
+//        
 //        return signatureBaseString.hmacSHA1Hash(key: signingKey)
 //    }
 //    
@@ -126,21 +128,21 @@
 //                                       consumerSecret: request.consumerSecret)
 //        
 //        parameters.append(URLQueryItem(name: "oauth_signature", value: signature))
-//
+//        
 //        var urlRequest = URLRequest(url: baseURL)
 //        urlRequest.httpMethod = request.httpMethod
 //        urlRequest.setValue(oAuthAuthorizationHeader(parameters: parameters),
 //                            forHTTPHeaderField: "Authorization")
-//
+//        
 //        return
-//            URLSession.shared.dataTaskPublisher(for: urlRequest)
+//        URLSession.shared.dataTaskPublisher(for: urlRequest)
 //            .tryMap { data, response -> TemporaryCredentials in
 //                guard let response = response as? HTTPURLResponse
 //                else { throw OAuthError.unknown }
-//
+//                
 //                guard response.statusCode == 200
 //                else { throw OAuthError.httpURLResponse(response.statusCode) }
-//
+//                
 //                guard let parameterString = String(data: data, encoding: .utf8)
 //                else { throw OAuthError.cannotDecodeRawData }
 //                
@@ -228,7 +230,7 @@
 //                    }
 //                    
 //                    return (TokenCredentials(accessToken: oAuthToken,
-//                                            accessTokenSecret: oAuthTokenSecret),
+//                                             accessTokenSecret: oAuthTokenSecret),
 //                            User(ID: userID,
 //                                 screenName: screenName))
 //                } else {
@@ -255,7 +257,7 @@
 //        self.authorizationSheetIsPresented = true
 //        
 //        self.subscriptions["oAuthRequestTokenSubscriber"] =
-//            self.oAuthRequestTokenPublisher()
+//        self.oAuthRequestTokenPublisher()
 //            .receive(on: DispatchQueue.main)
 //            .sink(receiveCompletion: { completion in
 //                switch completion {
@@ -277,12 +279,12 @@
 //                print("Authorization URL: \(String(describing: self.authorizationURL))")
 //                
 //                self.subscriptions["onOAuthRedirect"] =
-//                    self.onOAuthRedirect
+//                self.onOAuthRedirect
 //                    .sink(receiveValue: { [weak self] url in
 //                        guard let self = self else { return }
 //                        
 //                        self.subscriptions.removeValue(forKey: "onOAuthRedirect")
-//
+//                        
 //                        self.authorizationSheetIsPresented = false
 //                        self.authorizationURL = nil
 //                        
@@ -300,21 +302,21 @@
 //                            }
 //                            
 //                            self.subscriptions["oAuthAccessTokenSubscriber"] =
-//                                self.oAuthAccessTokenPublisher(temporaryCredentials: temporaryCredentials,
-//                                                               verifier: oAuthVerifier)
-//                                .receive(on: DispatchQueue.main)
-//                                .sink(receiveCompletion: { _ in
-//                                    // Error handler
-//                                }, receiveValue: { [weak self] (tokenCredentials, user) in
-//                                    guard let self = self else { return }
-//                                    
-//                                    self.subscriptions.removeValue(forKey: "oAuthRequestTokenSubscriber")
-//                                    self.subscriptions.removeValue(forKey: "onOAuthRedirect")
-//                                    self.subscriptions.removeValue(forKey: "oAuthAccessTokenSubscriber")
-//                                    
-//                                    self.tokenCredentials = tokenCredentials
-//                                    self.user = user
-//                                })
+//                            self.oAuthAccessTokenPublisher(temporaryCredentials: temporaryCredentials,
+//                                                           verifier: oAuthVerifier)
+//                            .receive(on: DispatchQueue.main)
+//                            .sink(receiveCompletion: { _ in
+//                                // Error handler
+//                            }, receiveValue: { [weak self] (tokenCredentials, user) in
+//                                guard let self = self else { return }
+//                                
+//                                self.subscriptions.removeValue(forKey: "oAuthRequestTokenSubscriber")
+//                                self.subscriptions.removeValue(forKey: "onOAuthRedirect")
+//                                self.subscriptions.removeValue(forKey: "oAuthAccessTokenSubscriber")
+//                                
+//                                self.tokenCredentials = tokenCredentials
+//                                self.user = user
+//                            })
 //                            print("test")
 //                        }
 //                    })

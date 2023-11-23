@@ -11,7 +11,6 @@ struct TabBarView: View {
     @State private var selectedSegment = 0
     @State var userData: UserData
 
-
     var body: some View {
         Group {
             HStack(alignment: .center) {
@@ -22,24 +21,18 @@ struct TabBarView: View {
                         selectedSegment = index
                     }
                     .font(Font.system(size: 16).weight(.bold))
-                    .foregroundColor(selectedSegment == index ? .black : .gray)
+                    .foregroundColor(selectedSegment == index ? Color("MainTextColor") : .gray)
                     .multilineTextAlignment(.center)
                     .padding(EdgeInsets(top: 0, leading: 0, bottom: 16, trailing: 0))
                     .overlay(Rectangle()
                         .frame(width: nil, height: 4)
-                        .foregroundColor(selectedSegment == index ? Color.blue: Color.clear), alignment: .bottom
-                    )
-                    
+                        .foregroundColor(selectedSegment == index ? Color.blue: Color.clear), alignment: .bottom)
                     Spacer()
                 }
                 
-                
             } //HStack
             .padding(EdgeInsets(top: 0, leading: 16, bottom: 0, trailing: 16))
-            .overlay(Rectangle()
-                .frame(width: nil, height: 0.5, alignment: .top)
-                .foregroundColor(Color.gray), alignment: .bottom
-            )
+            Divider()
         } //VStack
             TabView(selection: $selectedSegment) {
                 PostsView(userData: userData)
@@ -54,10 +47,7 @@ struct TabBarView: View {
                     .tag(4)
             }
             .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-        
     }
-    
-    
 }
 
 #Preview {

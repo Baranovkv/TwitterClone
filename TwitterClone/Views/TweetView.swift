@@ -10,13 +10,11 @@ import SwiftUI
 
 struct TweetView: View {
     @State private var tweet: Tweet = Tweet(text: "")
-    @State private var isShowingErrorAlert = false
+    @Binding var isPresented: Bool
     @State var userData: UserData
     
-    
     var tweetViewModel = TweetViewModel()
-    
-    
+        
     var body: some View {
         NavigationView {
             VStack { //VStack1
@@ -38,29 +36,37 @@ struct TweetView: View {
                     
                 } //HStack1
             } //VStack1
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    
+                    Button(action: {
+                        tweetViewModel.postTweet(tweet: tweet)
+                        isPresented.toggle()
+                    }) {
+                        Text("Post")
+                            .foregroundColor(.white)
+                            .padding(.horizontal, 16)
+                            .padding(.vertical, 8)
+                            .background(Color.blue)
+                            .cornerRadius(40)
+                            .disabled(tweet.text == "")
+                            .opacity(tweet.text == "" ? 0.5 : 1.0)
+                    }
+                }
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button(action: {
+                        isPresented.toggle()
+                    }) {
+                        Text("Close")
+                            .foregroundStyle(Color("MainTextColor"))
+                    }
+                }
+            }
             .padding()
         } //NavigationView
-        
-        
-        
-        Button(action: {
-            tweetViewModel.postTweet(tweet: tweet)
-        }) {
-            Text("Отправить твит")
-                .foregroundColor(.white)
-                .padding()
-                .background(Color.blue)
-                .cornerRadius(8)
-        }
-        
-        .padding()
-        .navigationBarTitle("Новый твит", displayMode: .inline)
-        .alert(isPresented: $isShowingErrorAlert) {
-            Alert(title: Text("Ошибка"), message: Text("Не удалось отправить твит"), dismissButton: .default(Text("OK")))
-        }
     }
 }
 
 #Preview {
-    TweetView(userData: MockUserData)
+    TweetView(isPresented: .constant(true), userData: MockUserData)
 }

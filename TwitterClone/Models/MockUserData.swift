@@ -8,7 +8,7 @@
 let MockUserData = UserData(id: "1 Test",
                             name: "Kirill",
                             username: "@Kirill123",
-                            createdAt: "November 2023",
+                            createdAt: "2023-09-17T12:03:38.000Z",
                             mostRecentTweetID: "123",
                             isProtected: false,
                             location: nil,

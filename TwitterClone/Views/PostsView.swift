@@ -15,7 +15,7 @@ struct PostsView: View {
         VStack{
             ScrollView {
                 if userData.mostRecentTweetID != nil {
-                    ForEach (0..<10) { _ in
+                    ForEach (0..<1) { _ in
                     HStack(alignment: .top, content: { //HStack1
                         AsyncImage(url: URL(string: userData.profileImageURL ?? "noImage")) { image in
                             image.resizable()
@@ -27,11 +27,15 @@ struct PostsView: View {
                         VStack(alignment: .leading, content: { //VStack1
                             HStack { // HStack2
                                 Text(userData.name)
+                                    .accessibilityLabel("Name: \(userData.name)")
                                 Text(userData.username)
+                                    .foregroundStyle(.gray)
+                                    .accessibilityLabel("Username: \(userData.username)")
                                 Text("10m") //Time from publish
+                                    .foregroundStyle(.gray)
                                 Spacer()
                                 Button("..."){ }
-                                    .foregroundColor(.black)
+                                    .foregroundColor(.gray)
                             } //Hstack2
                             Text("I'm testing twitter API")
                             HStack {
@@ -51,11 +55,12 @@ struct PostsView: View {
                                     Image(systemName: "square.and.arrow.up")
                                 }
                             } //HStack2
+                            .foregroundColor(.gray)
                         }) // VStack1
                     }) // HStack1
                     .padding()
+                    Divider()
                 }
-                    
                     Spacer()
                 }
             }
